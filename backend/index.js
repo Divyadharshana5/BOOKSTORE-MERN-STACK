@@ -98,8 +98,11 @@ app.put("/books/:id", async (request, response) => {
 app.delete("/books/:id", async (request, response) => {
   try {
     const { id } = request.params;
-
-    const result = await Book.findByIdAndDelete(id);
+    const trimmedId = id.trim();
+    if (!mongoose.Types.ObjectId.isValid(trimmedId)) {
+      return response.status(400).send({ message: "Invalid Book ID format" });
+    }
+    const result = await Book.findByIdAndDelete(trimmedId);
 
     if (!result) {
       return response.status(404).json({ message: "Book not found" });
