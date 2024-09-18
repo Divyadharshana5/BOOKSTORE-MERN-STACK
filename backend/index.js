@@ -10,7 +10,7 @@ app.use(cors("*"));
 app.use(express.json());
 app.get("/", (request, response) => {
   console.log(request);
-  return response.status(234).send("Welcome To MERN Stack Tutorial");
+  return response.json("Welcome To MERN Stack Tutorial");
 });
 
 //Route for Save a new Book
