@@ -55,7 +55,11 @@ app.get(`/books`, async (request, response) => {
 app.get(`/books/:id`, async (request, response) => {
   try {
     const { id } = request.params;
-    const book = await Book.findById(id);
+    const trimmedId = id.trim();
+    if (!mongoose.Types.ObjectId.isValid(trimmedId)) {
+      return response.status(400).send({ message: "Invalid Book ID format" });
+    }
+    const book = await Book.findById(trimmedId);
     return response.status(200).json(book);
   } catch (error) {
     console.log(error.message);
@@ -83,6 +87,23 @@ app.put("/books/:id", async (request, response) => {
       return response.status(404).json({ message: "Book not found" });
     }
     return response.status(200).send({ message: "Book update successfully" });
+  } catch (error) {
+    console.log(error.message);
+    response.status(500).send({ message: error.message });
+  }
+});
+
+//Route for Delete a Book
+app.delete("/books/:id", async (request, response) => {
+  try {
+    const { id } = request.params;
+
+    const result = await Book.findByIdAndDelete(id);
+
+    if (!result) {
+      return response.status(404).json({ message: "Book not found" });
+    }
+    return response.status(200).send({ message: "Book deleted successfully" });
   } catch (error) {
     console.log(error.message);
     response.status(500).send({ message: error.message });
