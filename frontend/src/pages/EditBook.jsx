@@ -9,14 +9,15 @@ const EditBook = () => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [publishYear, setPublishYear] = useState("");
-  const [loading, setLoading] = useState("false");
-  const navigate = useNavigate("");
-  const { id } = useParams;
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { id } = useParams();
   const { enqueueSnackbar } = useSnackbar();
+
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`http://localhost:5555/books/${id}`)
+      .get(`https://bookstore-mern-stack-mu.vercel.app/books/${id}`)
       .then((response) => {
         setAuthor(response.data.author);
         setPublishYear(response.data.publishYear);
@@ -25,10 +26,13 @@ const EditBook = () => {
       })
       .catch((error) => {
         setLoading(false);
-        alert("An error happened,please check console");
+        enqueueSnackbar("An error occurred, please check the console", {
+          variant: "error",
+        });
         console.log(error);
       });
-  }, []);
+  }, [id, enqueueSnackbar]);
+
   const handleEditBook = () => {
     const data = {
       title,
@@ -40,21 +44,21 @@ const EditBook = () => {
       .put(`https://bookstore-mern-stack-mu.vercel.app/books/${id}`, data)
       .then(() => {
         setLoading(false);
-        enqueueSnackbar("Book Edited Successfully", { variant: "Success" });
+        enqueueSnackbar("Book Edited Successfully", { variant: "success" }); // Use "success" instead of "Success"
         navigate("/");
       })
       .catch((error) => {
         setLoading(false);
-        // alert("An error happened,please check console");
-        enqueueSnackbar("Error", { variant: "error" });
+        enqueueSnackbar("Error editing the book", { variant: "error" });
         console.log(error);
       });
   };
+
   return (
     <div className="p-4">
       <BackButton />
       <h1>Edit Book</h1>
-      {loading ? <Spinner /> : ""}
+      {loading && <Spinner />}
       <div className="flex flex-col border-2 border-sky-400 rounded-xl w-[600px] p-4 mx-auto">
         <div className="my-4">
           <label className="text-xl mr-4 text-gray-500">Title</label>
@@ -75,7 +79,7 @@ const EditBook = () => {
           />
         </div>
         <div className="my-4">
-          <label className="text-xl mr-4 text-gray-500">PublishYear</label>
+          <label className="text-xl mr-4 text-gray-500">Publish Year</label>
           <input
             type="text"
             value={publishYear}
