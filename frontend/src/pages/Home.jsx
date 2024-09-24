@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Spinner from "..Components/Spinner";
+import Spinner from "../Components/Spinner";
 import { Link } from "react-router-dom";
 import { AiOutlineEdit } from "react-icons/ai";
 import { BsInfoCircle } from "react-icons/bs";
@@ -10,13 +10,13 @@ import BooksTable from "../Components/home/BooksTable";
 
 const Home = () => {
   const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useEffect(false);
+  const [loading, setLoading] = useState(false);
   const [showType, setShowType] = useState("table");
 
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://localhost:5555/books")
+      .get("https://bookstore-mern-stack-mu.vercel.app/books")
       .then((response) => {
         setBooks(response.data.data);
         setLoading(false);

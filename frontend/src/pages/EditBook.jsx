@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Spinner from "..Components/Spinner";
-import axios from "axios";
+import Spinner from "../Components/Spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSnackbar } from "notistack";
+import axios from "axios";
+import BackButton from "../Components/BackButton";
 
 const EditBook = () => {
   const [title, setTitle] = useState("");
@@ -37,7 +37,7 @@ const EditBook = () => {
     };
     setLoading(true);
     axios
-      .put(`http://localhost:5555/books/${id}`, data)
+      .put(`https://bookstore-mern-stack-mu.vercel.app/books/${id}`, data)
       .then(() => {
         setLoading(false);
         enqueueSnackbar("Book Edited Successfully", { variant: "Success" });

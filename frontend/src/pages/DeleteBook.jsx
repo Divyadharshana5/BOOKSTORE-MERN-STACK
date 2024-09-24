@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import BackButton from "../Components/BackButton";
 import axios from "axios";
-import Spinner from "..Components/Spinner";
+import Spinner from "../Components/Spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSnackbar } from "notistack";
 
@@ -13,7 +13,7 @@ const DeleteBook = () => {
   const handleDeleteBook = () => {
     setLoading(true);
     axios
-      .delete(`http://localhost:5555/books/${id}`)
+      .delete(`https://bookstore-mern-stack-mu.vercel.app/books/${id}`)
       .then(() => {
         setLoading(false);
         enqueueSnackbar("Book Deleted Successsfully", { variant: "Success" });
